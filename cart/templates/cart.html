@@ -1,0 +1,41 @@
+{% extends 'base.html' %} {% load static from staticfiles %} {% load bootstrap_tags %} {% block content %}
+<div class="row row-flex">
+    {% for item in cart_items %}
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 panel-style ">
+        {% if item.feature.status == "todo" %}
+        <div class="panel panel-danger">
+            {% elif item.feature.status == "doing" %}
+            <div class="panel panel-warning">
+                {% else %}
+                <div class="panel panel-success">
+                    {% endif %}
+                    <div class="panel-heading">Status: {{ item.feature.status }}</div>
+                    <div class="panel-body">
+
+                        <h4 class="card-title">{{ item.feature.name }}</h4>
+                        <p class="product-description card-text">{{ item.feature.description|truncatewords:30 }}</p>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <form method="post" action="{% url 'adjust_cart' item.id %}">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger circle-maker" type="submit"><span class="glyphicon glyphicon-remove"></span></button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <p class="views"><span class="glyphicon glyphicon-eye-open"></span> {{ item.feature.views }}</p>
+                        <p class="views"><span class="glyphicon glyphicon-ok"></span> {{ item.feature.upvotes }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <h5>Total</h5>
+            <p><span class="glyphicon glyphicon-gbp" aria-hidden="true"></span>{{ total }}</p>
+            {% if cart_items %}
+            <a href="{% url 'checkout' %}" class="btn btn-success" role="button"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>Checkout</a>
+            {% else %}
+            {% endif %}
+        </div>
+        {% endblock %}

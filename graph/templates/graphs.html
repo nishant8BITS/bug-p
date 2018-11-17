@@ -1,0 +1,208 @@
+{% extends 'base.html' %} {% block homepages %}
+<div class="container-fluid callout-container">
+    <!-- Callout -->
+    <div class="row community-section">
+        <div class="col-xs-12 community-section">
+            <section style="background-image: url('/media/community-cover.jpg')" class="callout jumbotron text-center">
+                <h1>Community</h1>
+                <hr class='block-divider block-divider--orange'>
+                <p><a class="btn btn-lg btn--cta btn--red btn-sm" href="{% url 'register' %}">Sign Up!</a></p>
+                <p class="text-muted"><small>"The greatness of a community is most accurately measured by the compassionate actions of its members."</small></p>
+            </section>
+        </div>
+    </div>
+</div>
+<div class="container-wrapper container-wrapper--white">
+    <div class="container features-container content-container">
+        <section class="features">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <div class="feature">
+                        <h4 class="graph-headers">Variety</h4>
+                        <canvas id="numberOfChart" width="400" height="400"></canvas>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <div class="feature">
+                        <h4 class="graph-headers">Upvotes</h4>
+                        <canvas id="maxOfChart" width="400" height="400"></canvas>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                    <div class="feature">
+                        <h4 class="graph-headers">Status</h4>
+                        <canvas id="statusOfChart" width="400" height="400"></canvas>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-12">
+                    <div class="feature">
+                        <div class="feature">
+                            <h4 class="graph-headers">Feature</h4>
+                            <ul class="list-group features-explanation-list ">
+                                <li class="list-group-item active">Ask for new features</li>
+                                <li class="list-group-item">Become a member</li>
+                                <li class="list-group-item">Describe a feature you would like to add to UnicornAttractor and share it!</li>
+                                <li class="list-group-item">If your feature is upvoted enough by other users we will devote <strong>50%</strong> of our time to building it and release it in our next update!
+
+                                    <div class="progress progressbar-feature">
+                                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+                                            50% working on feature
+                                        </div>
+                                        <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: 50%">
+                                            Other tasks
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script>
+    var endpoint = "{% url 'number_of_graph' %}"
+    var default_data = []
+    var labels = []
+    $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: function(data) {
+            labels1 = data.labels1
+            labels2 = data.labels2
+            labels3 = data.labels3
+            max_values_data = data.max_values
+            default_data = data.default
+            bugs_feature_status = data.bugs_and_feature_status
+            setChart()
+            setMaxChart()
+            statusChart()
+        },
+        error: function(error_data) {
+            console.log(error_data)
+        }
+    })
+
+    function setChart() {
+        var ctx = document.getElementById("numberOfChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: labels1,
+                datasets: [{
+                    label: 'Variety',
+                    data: default_data,
+                    backgroundColor: [
+                        '#FB5E5E',
+                        '#5EB8FB',
+                        '#FBDE5E',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    function setMaxChart() {
+        var ctx = document.getElementById("maxOfChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels2,
+                datasets: [{
+                    label: 'Largest amount of upvotes on a bug/feature',
+                    data: max_values_data,
+                    backgroundColor: [
+                        '#FB5E5E',
+                        '#5EB8FB',
+                        '#FBDE5E',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+    function statusChart() {
+        var ctx = document.getElementById("statusOfChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'polarArea',
+            data: {
+                labels: labels3,
+                datasets: [{
+                    label: 'Status of a bugs and features',
+                    data: bugs_feature_status,
+                    backgroundColor: [
+                        '#FB5E5E',
+                        '#FBDE5E',
+                        '#5EB8FB',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row row-flex">
+    {% for feature in features %}
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 panel-style ">
+        {% if feature.status == "todo" %}
+        <div class="panel panel-danger">
+            {% elif feature.status == "doing" %}
+            <div class="panel panel-warning">
+                {% else %}
+                <div class="panel panel-success">
+                    {% endif %}
+                    <div class="panel-heading">Status: {{ feature.status }}</div>
+                    <div class="panel-body">
+
+                        <h4 class="card-title">{{ feature.name }}</h4>
+                        <p class="product-description card-text">{{ feature.description|truncatewords:5 }}</p>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><a href="{% url 'feature_detail' feature.id %}" class="btn btn-primary circle-maker"><span class="glyphicon glyphicon-plus"></span></a></p>
+                            </div>
+                            <div class="col-sm-3">
+                                {% if feature.status == "done" %}
+                                <!-- Button trigger modal -->
+                                {% else %}
+                                <button class="btn btn-success circle-maker" type="submit" data-toggle="modal" data-target="#addToCartModal{{ feature.id }}"><span class="glyphicon glyphicon-ok"></span></button> {% endif %}
+                            </div>
+                        </div>
+
+                        <p class="views"><span class="glyphicon glyphicon-eye-open"></span> {{ feature.views }}</p>
+                        <p class="views"><span class="glyphicon glyphicon-ok"></span> {{ feature.upvotes }}</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="addToCartModal{{ feature.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Upvote Feature</h4>
+                        </div>
+                        <div class="modal-body">
+                            You are about to favourite a feature. To be able to favoutrite a feature you need to pay a fee of £10. Press the plus sign to add the feature to your cart and then proceed to checkout.
+                        </div>
+                        <div class="modal-footer">
+                            <div class="row">
+                                <div class="col-xs-6 col-sm-6 col-md-8 col-lg-8 ">
+                    
+                                </div>
+                                <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                                <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                    <form method="post" action="{% url 'add_to_cart' feature.id %}">
+                                        {% csrf_token %}
+                                        <button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-plus"></span> Add</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

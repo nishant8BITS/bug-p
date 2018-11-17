@@ -1,0 +1,84 @@
+{% extends 'base.html' %} {% block homepages %}
+<div class="container-fluid callout-container">
+    <!-- Callout -->
+    <div class="row main-section">
+        <div class="col-xs-12 main-section">
+            <section style="background-image: url('/media/home-page.jpg')" class="callout jumbotron text-center">
+                <h1>Innovative, software solutions</h1>
+                <hr class='block-divider block-divider--orange'>
+                <p class="lead">Sign up to and join our vast community to share bugs and suggest new features!</p>
+                <p><a class="btn btn-lg btn--cta btn--red" href="{% url 'register' %}">Sign Up!</a></p>
+                <p class="text-muted"><small>We will not share your email with anyone else.</small></p>
+            </section>
+        </div>
+    </div>
+</div>
+<!-- /.callout -->
+
+<div class="container-wrapper container-wrapper--red">
+    <div class="container features-container content-container">
+        <!-- Features -->
+        <section class="features">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-header">
+                        <h2 class="text-uppercase common-headers">What can we offer?</h2>
+                        <hr class="block-divider block-divider--short block-divider--white">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="feature">
+                        <h3 class="common-headers"><span class="glyphicon glyphicon-user hidden-xs"></span> Online Community <span class="label label-warning hidden-xs">New!</span></h3>
+                        <p>
+                            Our new online community allows users to share bugs, suggest new features and talk to fellow developers using our software!
+                        </p>
+                        <p><a class="btn btn-lg btn--cta btn--red btn-sm" href="{% url 'graphs' %}">Read more</a></p>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="feature">
+                        <h3 class="common-headers"><span class="glyphicon glyphicon-question-sign hidden-xs"></span> About Us</h3>
+                        <p>
+                            New to this website. Read more to find out what we do!
+                        </p>
+                        <p><a class="btn btn-lg btn--cta btn--red btn-sm" data-toggle="modal" data-target="#aboutUsModal">Read more</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.features -->
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="aboutUsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">About Us</h4>
+            </div>
+            <div class="modal-body">
+                <h4>Who we are</h4>
+                <p>
+                    Unicorn Attractor is a new, innovative company that allows businesses to easily run and manage their projects. 
+                </p>
+                <hr>
+                <h4>Our Online Community</h4>
+                <p>
+                    Our new online comminity allows users to share bugs they have found in our code and also suggest new features to us. 
+                    <strong>Interested in joining?</strong> Stop messing about and press the button below!
+                </p>
+                <a href="{% url 'register' %}" class="btn btn-sm btn--cta-modal btn--red btn-sm">Sign Up</a>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

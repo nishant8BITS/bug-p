@@ -1,0 +1,96 @@
+{% extends 'base.html' %} {% block content %}
+<div class="row">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <h3>Welcome {{ user.username }} </h3>
+    </div>
+</div>
+<div class="row bug-feature-buttons">
+    <div class="col-xs-hidden col-sm-3 col-md-3 col-lg-3">
+
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+        <a href="{% url 'new_bug' %}"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add Bug</button></a>
+    </div>
+    <div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">
+        <a href="{% url 'new_feature' %}"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Add Feature</button></a>
+    </div>
+    <div class="col-xs-hidden col-sm-3 col-md-3 col-lg-3">
+
+    </div>
+</div>
+{% if bugs %}
+<hr>
+<div class="row row-flex">
+    <h5>Your bugs</h5>
+    {% for bug in bugs %}
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 panel-style ">
+        {% if bug.status == "todo" %}
+        <div class="panel panel-danger">
+            {% elif bug.status == "doing" %}
+            <div class="panel panel-warning">
+                {% else %}
+                <div class="panel panel-success">
+                    {% endif %}
+                    <div class="panel-heading">Status: {{ bug.status }}</div>
+                    <div class="panel-body">
+
+                        <h4 class="card-title">{{ bug.name }}</h4>
+                        <p class="product-description card-text">{{ bug.description|truncatewords:5 }}</p>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p><a href="{% url 'bug_detail' bug.id %}" class="btn btn-primary circle-maker"><span class="glyphicon glyphicon-plus"></span></a></p>
+                            </div>
+                            <div class="col-sm-3">
+                                <p><a href="{% url 'edit_bug' bug.id %}" class="btn btn-success circle-maker"><span class="glyphicon glyphicon-pencil"></span></a></p>
+                            </div>
+                            <div class="col-sm-3">
+                                <p><a href="{% url 'delete_bug' bug.id %}" class="btn btn-danger circle-maker"><span class="glyphicon glyphicon-remove"></span></a></p>
+                            </div>
+                        </div>
+                        <p class="views"><span class="glyphicon glyphicon-eye-open"></span> {{ bug.views }}</p>
+                        <p class="views"><span class="glyphicon glyphicon-ok"></span> {{ bug.upvotes }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %} {% endif %} {% if features %}
+        <hr>
+        <div class="row ">
+            <h5>Your features</h5>
+            {% for feature in features %}
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 panel-style ">
+                {% if feature.status == "todo" %}
+                <div class="panel panel-danger">
+                    {% elif feature.status == "doing" %}
+                    <div class="panel panel-warning">
+                        {% else %}
+                        <div class="panel panel-success">
+                            {% endif %}
+                            <div class="panel-heading">Status: {{ feature.status }}</div>
+                            <div class="panel-body">
+
+                                <h4 class="card-title">{{ feature.name }}</h4>
+                                <p class="product-description card-text">{{ feature.description|truncatewords:5 }}</p>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <p><a href="{% url 'feature_detail' feature.id %}" class="btn btn-primary circle-maker"><span class="glyphicon glyphicon-plus"></span></a></p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p><a href="{% url 'edit_feature' feature.id %}" class="btn btn-success circle-maker"><span class="glyphicon glyphicon-pencil"></span></a></p>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <p><a href="{% url 'delete_feature' feature.id %}" class="btn btn-danger circle-maker"><span class="glyphicon glyphicon-remove"></span></a></p>
+                                    </div>
+                                </div>
+
+                                <p class="views"><span class="glyphicon glyphicon-eye-open"></span> {{ feature.views }}</p>
+                                <p class="views"><span class="glyphicon glyphicon-ok"></span> {{ feature.upvotes }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% else %} {% endif %} {% endblock %}
